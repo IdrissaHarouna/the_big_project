@@ -1,0 +1,14 @@
+<h1>Gossips#show</h1>
+<p>Find me in app/views/gossips/show.html.erb</p>
+<div class="card mb-4">
+  <div class="card-body">
+    <h2><%= @gossip.title %></h2>
+    <h6 class="text-muted mb-3">
+      par <%= link_to @gossip.user.full_name, user_path(@gossip.user) %>
+    </h6>
+    <p><%= simple_format(@gossip.content) %></p>
+  </div>
+  <div class="card-footer text-muted">
+    Publié le <%= @gossip.created_at.strftime("%d %B %Y à %H:%M") %>
+  </div>
+</div>
