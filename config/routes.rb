@@ -7,13 +7,13 @@ Rails.application.routes.draw do
   get 'static_pages/welcome'
   root 'gossips#index'
 
-
   get '/team', to: 'static_pages#team'
   get '/contact', to: 'static_pages#contact'
   get '/welcome/:first_name', to: 'static_pages#welcome', as: 'welcome'
 
-  resources :gossips, only: [:index, :show]
+  resources :gossips, only: [:index, :show, :new, :create]  
   resources :users, only: [:show]
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
