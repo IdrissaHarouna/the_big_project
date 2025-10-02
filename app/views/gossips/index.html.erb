@@ -1,10 +1,11 @@
-<h1>Bienvenue sur The Big Project </h1>
+<h1>Bienvenue sur The Big Project</h1>
 <p>Les derniers potins publiés :</p>
 
 <% @gossips.each do |gossip| %>
   <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
     <h2><%= link_to gossip.title, gossip_path(gossip) %></h2>
     <p><%= gossip.content %></p>
+
     <p><strong>Publié par :</strong> 
       <% if gossip.user.present? %>
         <%= link_to "#{gossip.user.first_name} #{gossip.user.last_name}", user_path(gossip.user) %>
@@ -12,10 +13,14 @@
         Auteur inconnu
       <% end %>
     </p>
+
+    <p><strong><%= pluralize(gossip.comments.count, 'commentaire') %></strong></p>
+
     <p><em>Publié le <%= gossip.created_at.strftime("%d %b %Y à %H:%M") %></em></p>
   </div>
 <% end %>
 
 <br>
 <%= link_to "Ajouter un nouveau potin", new_gossip_path %>
+
 

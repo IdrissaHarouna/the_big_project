@@ -4,9 +4,16 @@ class CreateUsers < ActiveRecord::Migration[7.1]
       t.string :first_name
       t.string :last_name
       t.string :email
-      t.text :bio
+      t.string :password_digest
+
+      # Association avec une city (clé étrangère)
+      t.references :city, null: false, foreign_key: true
 
       t.timestamps
     end
   end
 end
+
+
+
+
