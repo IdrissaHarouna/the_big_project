@@ -1,4 +1,5 @@
 class GossipsController < ApplicationController
+  before_action :anonymous_user, only: [:create]
   def index
     @gossips = Gossip.all.order(created_at: :desc)
   end
@@ -31,6 +32,19 @@ class GossipsController < ApplicationController
 
   def edit
     @gossip = Gossip.find(params[:id])
+  end
+
+  private 
+
+  def anonymous_user
+    if User.find_by(email: "anonymous@example.com")== nil
+      User.create(
+        first_name: "Anonymous",
+        last_name: "User",
+        email: "anonymous@example.com",
+        bio: "This is an anonymous user."
+      ).save
+    end
   end
 end
 
