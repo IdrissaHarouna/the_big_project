@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/welcome/:first_name', to: 'static_pages#welcome', as: 'welcome'
 
-  resources :gossips, only: [:index, :show, :new, :create]  
+  resources :gossips do
+    resources :comments, only: [:create, :destroy, :edit, :update]
+  end
   resources :users, only: [:show]
 
 
