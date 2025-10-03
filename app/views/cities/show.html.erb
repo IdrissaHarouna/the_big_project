@@ -1,0 +1,7 @@
+<h2><%= @city.name %></h2>
+<h3>Potins de cette ville :</h3>
+<ul>
+  <% @gossips.each do |gossip| %>
+    <li><%= link_to gossip.title, gossip_path(gossip) %></li>
+  <% end %>
+</ul>

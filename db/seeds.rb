@@ -10,31 +10,72 @@
 
 
 # Suppression des anciens enregistrements pour recommencer à zéro
-User.destroy_all
+# db/seeds.rb
+
+# db/seeds.rb
+# db/seeds.rb
+require 'faker'
+
+puts "Nettoyage de la base..."
+Comment.destroy_all
 Gossip.destroy_all
+User.destroy_all
+City.destroy_all
+Tag.destroy_all
+GossipTag.destroy_all
+puts "Base nettoyée !"
+
+# Création des villes
+10.times do
+  City.create!(
+    name: Faker::Address.city
+  )
+end
+puts "10 villes créées !"
 
 # Création des utilisateurs
-users = [
-  {first_name: "Alice", last_name: "Dupont", email: "alice@example.com", bio: "J'adore les potins."},
-  {first_name: "Bob", last_name: "Martin", email: "bob@example.com", bio: "Toujours à l'affût."},
-  {first_name: "Charlie", last_name: "Durand", email: "charlie@example.com", bio: "Le roi des rumeurs."}
-]
-
-users.each do |user_data|
-  User.create!(user_data)
+10.times do
+  User.create!(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email,
+    city_id: City.all.sample.id
+  )
 end
+puts "10 utilisateurs créés !"
 
-# Création de potins
-gossips = [
-  {title: "Potin 1", content: "Alice a acheté un nouveau chat.", user: User.find_by(first_name: "Alice")},
-  {title: "Potin 2", content: "Bob a changé de coiffure.", user: User.find_by(first_name: "Bob")},
-  {title: "Potin 3", content: "Charlie a surpris tout le monde avec un gâteau.", user: User.find_by(first_name: "Charlie")},
-  {title: "Potin 4", content: "Alice va partir en vacances à Paris.", user: User.find_by(first_name: "Alice")},
-  {title: "Potin 5", content: "Bob prépare une surprise pour son anniversaire.", user: User.find_by(first_name: "Bob")}
-]
-
-gossips.each do |gossip_data|
-  Gossip.create!(gossip_data)
+# Création des potins
+10.times do
+  Gossip.create!(
+    title: Faker::Lorem.words(number: 2).join(" ")[0..13], # tronquer à 14 caractères max
+    content: Faker::Lorem.paragraph,
+    user: User.all.sample
+  )
 end
+puts "10 potins créés !"
 
-puts "Seed terminé : #{User.count} utilisateurs et #{Gossip.count} potins créés."
+# Création des commentaires
+20.times do
+  Comment.create!(
+    content: Faker::Lorem.sentence,
+    user: User.all.sample,
+    gossip: Gossip.all.sample
+  )
+end
+puts "20 commentaires créés !"
+
+# Création des tags
+10.times do
+  Tag.create!(
+    title: Faker::Book.genre[0..9] # tronquer à 10 caractères max si nécessaire
+  )
+end
+puts "10 tags créés !"
+
+# Association des tags aux potins
+Gossip.all.each do |gossip|
+  gossip.tags << Tag.all.sample
+end
+puts "Tags associés aux potins !"
+
+puts "Seeds terminés avec succès !"

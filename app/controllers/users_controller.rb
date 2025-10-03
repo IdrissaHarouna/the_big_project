@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   def show
-     @user = User.find(params[:id])
-    @gossips = @user.gossips.order(created_at: :desc)
+    @user = User.find(params[:id])
   end
 end
 
