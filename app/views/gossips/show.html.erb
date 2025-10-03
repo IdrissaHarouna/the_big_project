@@ -1,20 +1,26 @@
-<h1><%= @gossip.title %></h1>
 
+<h2><%= @gossip.title %></h2>
 <p><%= @gossip.content %></p>
+<p>Auteur : <%= link_to "#{@gossip.user.first_name} #{@gossip.user.last_name}", user_path(@gossip.user) %></p>
+<p>Ville : <%= link_to @gossip.user.city.name, city_path(@gossip.user.city) %></p>
 
-<p><strong>Auteur :</strong> 
-  <% if @gossip.user.present? %>
-    <%= link_to "#{@gossip.user.first_name} #{@gossip.user.last_name}", user_path(@gossip.user) %>
-  <% else %>
-    Auteur inconnu
-  <% end %>
-</p>
-
-<p><em>Publié le <%= @gossip.created_at.strftime("%d %b %Y à %H:%M") %></em></p>
+<%= link_to "Modifier", edit_gossip_path(@gossip), class: "btn btn-warning" %>
+<%= link_to "Supprimer", gossip_path(@gossip), method: :delete, data: { confirm: "Tu es sûr ?" }, class: "btn btn-danger" %>
 
 <hr>
+<h3>Commentaires</h3>
+<ul>
+  <% @comments.each do |comment| %>
+    <li>
+      <%= comment.content %> (par <%= comment.user.first_name %>
+      <%= link_to "Modifier", edit_gossip_comment_path(@gossip, comment) %>
+      <%= link_to "Supprimer", gossip_comment_path(@gossip, comment), method: :delete, data: { confirm: "Supprimer ?" } %>
+    </li>
+  <% end %>
+</ul>
 
-<%= link_to "Retour aux potins", gossips_path %> |
-<%= link_to " Modifier", edit_gossip_path(@gossip) %> |
-<%= link_to " Supprimer", gossip_path(@gossip), data: { turbo_method: :delete, turbo_confirm: "Es-tu sûr de vouloir supprimer ce potin ?" } %>
+<%= form_with(model: [@gossip, @comment]) do |f| %>
+  <%= f.text_area :content %>
+  <%= f.submit "Ajouter", class: "btn btn-success" %>
+<% end %>
 

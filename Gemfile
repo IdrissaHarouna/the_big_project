@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 
 ruby "3.4.6"
+gem 'faker', '~> 2.21'
+
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.5", ">= 7.1.5.2"

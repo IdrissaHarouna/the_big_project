@@ -1,5 +1,8 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<h2><%= @user.first_name %> <%= @user.last_name %></h2>
+<p>Email : <%= @user.email %></p>
+<p>Bio : <%= @user.bio %></p>
+<p>Ville : <%= link_to @user.city.name, city_path(@user.city) %></p>
+
 
 <div class="row">
   <div class="col-md-4">
@@ -12,15 +15,7 @@
     </div>
   </div>
 
-  <div class="col-md-8">
-    <h4>Potins publiés</h4>
-    <% @gossips.each do |gossip| %>
-      <div class="mb-2">
-        <%= link_to gossip.title, gossip_path(gossip) %>
-        <div class="text-muted small">
-          Publié le <%= gossip.created_at.strftime("%d %b %Y") %>
-        </div>
-      </div>
-    <% end %>
-  </div>
+</div>
+
+
 </div>
