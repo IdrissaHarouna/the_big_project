@@ -1,26 +1,28 @@
-<h1>Bienvenue sur The Big Project</h1>
-<p>Les derniers potins publiés :</p>
+<h1 style="text-align: center; margin-bottom: 20px;">Bienvenue sur The Big Project</h1>
+<p style="text-align: center; font-style: italic;">Les derniers potins publiés :</p>
 
-<% @gossips.each do |gossip| %>
-  <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
-    <h2><%= link_to gossip.title, gossip_path(gossip) %></h2>
-    <p><%= gossip.content %></p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+  <% @gossips.each do |gossip| %>
+    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; width: 300px; background-color: #f9f9f9; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">
+      <h2 style="margin-top: 0;"><%= link_to gossip.title, gossip_path(gossip), style: 'text-decoration: none; color: #333;' %></h2>
+      <p style="font-size: 14px; color: #555;"><%= gossip.content %></p>
+      <p style="font-size: 13px; color: #777;">
+        <strong>Publié par :</strong>
+        <% if gossip.user.present? %>
+          <%= link_to "#{gossip.user.first_name} #{gossip.user.last_name}", user_path(gossip.user) %>
+        <% else %>
+          Auteur inconnu
+        <% end %>
+      </p>
+      <p style="font-size: 12px; color: #999;">
+        <%= pluralize(gossip.comments.count, 'commentaire') %> | 
+        Publié le <%= gossip.created_at.strftime("%d %b %Y à %H:%M") %>
+      </p>
+      <%= link_to "Voir les commentaires", gossip_path(gossip), style: "font-size: 13px; color: #007bff;" %>
+    </div>
+  <% end %>
+</div>
 
-    <p><strong>Publié par :</strong> 
-      <% if gossip.user.present? %>
-        <%= link_to "#{gossip.user.first_name} #{gossip.user.last_name}", user_path(gossip.user) %>
-      <% else %>
-        Auteur inconnu
-      <% end %>
-    </p>
-
-    <p><strong><%= pluralize(gossip.comments.count, 'commentaire') %></strong></p>
-
-    <p><em>Publié le <%= gossip.created_at.strftime("%d %b %Y à %H:%M") %></em></p>
-  </div>
-<% end %>
-
-<br>
-<%= link_to "Ajouter un nouveau potin", new_gossip_path %>
-
-
+<div style="text-align: center; margin-top: 30px;">
+  <%= link_to "Ajouter un nouveau potin", new_gossip_path, style: "padding: 10px 20px; background-color: #007bff; color: white; border-radius: 5px; text-decoration: none;" %>
+</div>

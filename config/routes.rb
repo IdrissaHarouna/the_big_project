@@ -1,22 +1,18 @@
 Rails.application.routes.draw do
-  get 'users/show'
-  get 'gossips/index'
-  get 'gossips/show'
   get 'static_pages/team'
   get 'static_pages/contact'
   get 'static_pages/welcome'
-  root 'gossips#index'
+  
 
 
   # Page d’accueil
   root "gossips#index"
 
   # Pages statiques
-  get '/team', to: 'static_pages#team'
-  get '/contact', to: 'static_pages#contact'
-  get '/welcome/:first_name', to: 'static_pages#welcome', as: 'welcome'
+  
+  get '/welcome/:first_name', to: 'static_pages#welcome'
 
-  resources :gossips, only: [:index, :show, :new, :create]  
+   
 
   # Ressources principales
   resources :gossips do
