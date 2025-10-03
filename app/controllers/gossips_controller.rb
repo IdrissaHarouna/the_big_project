@@ -3,10 +3,6 @@ class GossipsController < ApplicationController
     @gossips = Gossip.all.order(created_at: :desc)
   end
 
-
-    @gossips = Gossip.all
-  end
-
   def show
     @gossip = Gossip.find(params[:id])
     @comments = @gossip.comments
@@ -18,32 +14,20 @@ class GossipsController < ApplicationController
   end
 
   def create
-  anonymous_user = User.find_by(email: "anonymous@example.com")
+    anonymous_user = User.find_by(email: "anonymous@example.com")
 
-  @gossip = Gossip.new(
-    title: params[:title],
-    content: params[:content],
-    user: anonymous_user
-  )
+    @gossip = Gossip.new(
+      title: params[:title],
+      content: params[:content],
+      user: anonymous_user || User.first # fallback si l'anonyme n'existe pas
+    )
 
-  if @gossip.save
-    flash[:success] = 
-    redirect_to gossips_path
-  else
-    flash.now[:error] = 
-    render :new, status: :unprocessable_entity
-  end
-end
-
-end
-
-
-    @gossip = Gossip.new(gossip_params)
-    @gossip.user = User.first # utilisateur par défaut
     if @gossip.save
-      redirect_to @gossip, notice: "Potin créé avec succès !"
+      flash[:success] = "Potin créé avec succès !"
+      redirect_to gossips_path
     else
-      render :new
+      flash.now[:error] = "Erreur lors de la création du potin"
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -67,8 +51,9 @@ end
   end
 
   private
+
   def gossip_params
-    params.require(:gossip).permit(:title, :content, :tag_ids => [])
+    params.require(:gossip).permit(:title, :content, tag_ids: [])
   end
 end
 
